@@ -28,8 +28,7 @@ ONLY ONE DISK: Partition 1 = EFI 1 GB, partition 2 = SWAP user-defined (more tha
 - Stage 1 - minimal Arch setup
 - Stage 2 - User's advanced (or not) system configuration (choose programs to install, and configure dotfiles)
 
-## ISO Download
-[SourceForge](https://sourceforge.net/projects/ivoryos/files/)
+## ISO Download on [SourceForge](https://sourceforge.net/projects/ivoryos/files/)
 
 ## Building
 ```
