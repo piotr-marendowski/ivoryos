@@ -35,7 +35,7 @@ ONLY ONE DISK: Partition 1 = EFI 1 GB, partition 2 = SWAP user-defined (more tha
 # install archiso
 sudo pacman -S archiso
 # clone this repository
-git clone https://github.com/piotr-marendowski/ivoryos
+git clone https://github.com/piotr-marendowski/ivoryos.git
 # enter it
 cd ivoryos
 # compile new iso (building dir/, iso folder/, archiso profile dir/)

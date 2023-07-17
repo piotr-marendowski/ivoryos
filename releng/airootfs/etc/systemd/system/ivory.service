@@ -1,0 +1,11 @@
+[Unit]
+Description=Ivory one time 
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash /home/%i/install-script.sh
+User=%i
+Group=%i
+
+[Install]
+WantedBy=multi-user.target
