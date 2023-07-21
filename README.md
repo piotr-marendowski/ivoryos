@@ -7,7 +7,6 @@ The whole installation and configuration takes from a few hours to a few minutes
 ![screen2](assets/ivory2.png)
 ![screen3](assets/ivory3.png)
 ![screen4](assets/ivory4.png)
-
 ![screen5](assets/ivory5.png)
 
 placeholder, dwm will be riced :3
@@ -20,9 +19,8 @@ placeholder, dwm will be riced :3
 - TUI installation and customization process using [Whiptail](https://en.wikibooks.org/wiki/Bash_Shell_Scripting/Whiptail)
 
 ## System installation
-### Disk layout
 Disk partitioning is predefined, meaning that it will look like that:
-ONLY ONE DISK: Partition 1 = EFI 1 GB, partition 2 = SWAP user-defined (more than 1 GB), partition 3 = ROOT rest of the disk space.
+ONLY ONE DISK: Partition 1 = EFI 1 GB, partition 2 = SWAP user-defined (more than 1 GB), partition 3 = ROOT rest of the disk space. The user will be prompted to enter the name and password of the newly created user, which will have sudo privileges (the don't-ask type). The user will have to choose the [dotfiles branch](https://github.com/piotr-marendowski/dotfiles) which will be downloaded.
 
 ### Stages of installation
 - Stage 1 - minimal Arch setup
