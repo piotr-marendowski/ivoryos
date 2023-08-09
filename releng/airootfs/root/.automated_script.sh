@@ -61,7 +61,7 @@ actsellistbox=black,white
 sellistbox=white,black"
 
 reboot_now() {
-    if whiptail --title "Reboot" --yesno "\nDo you want to reboot now?" 9 25; then
+    if whiptail --title "Reboot" --yesno "\nDo you want to reboot now?" 9 40; then
         reboot
     fi
 }
@@ -170,16 +170,15 @@ two() {
     # Install the base system
     pacstrap /mnt base base-devel linux linux-firmware &> /dev/null
 }
-
 three() {
     # Generate disk layout
     genfstab -U /mnt >> /mnt/etc/fstab &> /dev/null
 }
-
 # Do necessary stuff in chroot - send every command alone
 # Thanks to <https://github.com/shagu> its working!
+# CHANGE KEYBOARD LAYOUT FOR YOURSELF
 four() {
-    arch-chroot /mnt /bin/bash -c "echo "KEYMAP=en_US" > /etc/vconsole.conf"  &> /dev/null      # Set keyboard layout
+    arch-chroot /mnt /bin/bash -c "echo "KEYMAP=pl_PL" > /etc/vconsole.conf"  &> /dev/null      # Set keyboard layout
     arch-chroot /mnt /bin/bash -c "pacman-key --init && pacman-key --populate archlinux" &> /dev/null
 }
 five() {
@@ -198,12 +197,12 @@ eight() {
     arch-chroot /mnt /bin/bash -c "sed -i 's/%wheel ALL=(ALL) NOPASSWD: ALL/# %wheel ALL=(ALL) NOPASSWD: ALL/g' /etc/sudoers" &> /dev/null
 }
 nine() {
-    arch-chroot /mnt /bin/bash -c 'root_password=$(whiptail --title "Set Root Password" --passwordbox "\nEnter new root password:" 10 50 3>&1 1>&2 2>&3); echo "root:$root_password" | chpasswd' &> /dev/tty1
+    arch-chroot /mnt /bin/bash -c 'root_password=$(whiptail --title "Set Root Password" --passwordbox "\nEnter new root password:" 10 40 3>&1 1>&2 2>&3); echo "root:$root_password" | chpasswd' &> /dev/tty1
     mv /etc/profile.d/firstboot.sh /mnt/etc/profile.d/
 
     choice=$(whiptail --title "Choose Branch" --menu "\nChoose the branch of dotfiles:" 11 60 2 \
-        "dwm" "   Minimal, designed for IvoryOS" \
-        "qtile" "   Feature rich, customizable" 3>&1 1>&2 2>&3)
+        "dwm"       "   Minimal, efficient" \
+        "qtile"     "   Feature rich, customizable" 3>&1 1>&2 2>&3)
 
     # Choose branch to clone aka window manager and type of script (qtile = good looking lots of options,
     # dwm = no options, pure efficiency and my configs)
@@ -211,11 +210,11 @@ nine() {
         echo "User chose qtile"
         # This "one-liner" took me literally a fucking month, BUT IT WORKS AS IN 06.07.2023!!!
         # everything all at once because username and password are necessary and their scope is in this command only :)
-        arch-chroot /mnt /bin/bash -c 'username=$(whiptail --title "Create User" --inputbox "\nEnter username:" 10 50 3>&1 1>&2 2>&3) && password=$(whiptail --title "Create User" --passwordbox "\nEnter password:" 10 50 3>&1 1>&2 2>&3) && clear && useradd -m $username -G wheel && echo -e "$password\n$password" | passwd "$username" && echo "User created!" && cd /home/$username && git clone --single-branch --branch qtile https://github.com/piotr-marendowski/dotfiles.git  && mv dotfiles .dotfiles && chmod +x /etc/profile.d/firstboot.sh && chown -R /home/$username/.dotfiles && chmod -R 755 /home/$username/.dotfiles' &> /dev/tty1
+        arch-chroot /mnt /bin/bash -c 'username=$(whiptail --title "Create User" --inputbox "\nEnter username:" 10 40 3>&1 1>&2 2>&3) && password=$(whiptail --title "Create User" --passwordbox "\nEnter password:" 10 40 3>&1 1>&2 2>&3) && clear && useradd -s /bin/zsh -m $username -G wheel && echo -e "$password\n$password" | passwd "$username" && echo "User created!" && cd /home/$username && git clone --single-branch --branch qtile https://github.com/piotr-marendowski/dotfiles.git && chmod +x /etc/profile.d/firstboot.sh && chown -R /home/$username/dotfiles && chmod -R 755 /home/$username/dotfiles' &> /dev/tty1
 
     elif [ "$choice" = "dwm" ]; then
         echo "User chose dwm"
-        arch-chroot /mnt /bin/bash -c 'username=$(whiptail --title "Create User" --inputbox "\nEnter username:" 10 50 3>&1 1>&2 2>&3) && password=$(whiptail --title "Create User" --passwordbox "\nEnter password:" 10 50 3>&1 1>&2 2>&3) && clear && useradd -m $username -G wheel && echo -e "$password\n$password" | passwd "$username" && echo "User created!" && cd /home/$username && git clone --single-branch --branch dwm https://github.com/piotr-marendowski/dotfiles.git && mv dotfiles .dotfiles && chmod +x /etc/profile.d/firstboot.sh && chown -R /home/$username/.dotfiles && chmod -R 755 /home/$username/.dotfiles' &> /dev/tty1
+        arch-chroot /mnt /bin/bash -c 'username=$(whiptail --title "Create User" --inputbox "\nEnter username:" 10 40 3>&1 1>&2 2>&3) && password=$(whiptail --title "Create User" --passwordbox "\nEnter password:" 10 40 3>&1 1>&2 2>&3) && clear && useradd -s /bin/zsh -m $username -G wheel && echo -e "$password\n$password" | passwd "$username" && echo "User created!" && cd /home/$username && git clone --single-branch --branch dwm https://github.com/piotr-marendowski/dotfiles.git && chmod +x /etc/profile.d/firstboot.sh && chown -R /home/$username/dotfiles && chmod -R 755 /home/$username/dotfiles' &> /dev/tty1
 
     fi
 
