@@ -1,4 +1,4 @@
-# IvoryOS - Arch based Linux distribution
+# IvoryOS - Arch based GNU/Linux distribution
 ![ivory logo](assets/ivoryOS.png)
 The whole installation and configuration takes from a few hours to a few minutes (depends on the internet speed). Made it for me to have my own distro with my own defaults. The whole project is WIP.
 
@@ -7,10 +7,9 @@ The whole installation and configuration takes from a few hours to a few minutes
 ![screen2](assets/ivory2.png)
 ![screen3](assets/ivory3.png)
 ![screen4](assets/ivory4.png)
-![screen5](assets/ivory5.png)
 
 placeholder, dwm will be riced :3
-![screen6](assets/ivory6.png)
+![screen5](assets/ivory6.png)
 
 ## Features
 - Sane defaults (for me at least)

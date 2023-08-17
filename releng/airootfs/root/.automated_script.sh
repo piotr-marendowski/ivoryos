@@ -210,11 +210,11 @@ nine() {
         echo "User chose qtile"
         # This "one-liner" took me literally a fucking month, BUT IT WORKS AS IN 06.07.2023!!!
         # everything all at once because username and password are necessary and their scope is in this command only :)
-        arch-chroot /mnt /bin/bash -c 'username=$(whiptail --title "Create User" --inputbox "\nEnter username:" 10 40 3>&1 1>&2 2>&3) && password=$(whiptail --title "Create User" --passwordbox "\nEnter password:" 10 40 3>&1 1>&2 2>&3) && clear && useradd -s /bin/zsh -m $username -G wheel && echo -e "$password\n$password" | passwd "$username" && echo "User created!" && cd /home/$username && git clone --single-branch --branch qtile https://github.com/piotr-marendowski/dotfiles.git && chmod +x /etc/profile.d/firstboot.sh && chown -R /home/$username/dotfiles && chmod -R 755 /home/$username/dotfiles' &> /dev/tty1
+        arch-chroot /mnt /bin/bash -c 'username=$(whiptail --title "Create User" --inputbox "\nEnter username:" 10 40 3>&1 1>&2 2>&3) && password=$(whiptail --title "Create User" --passwordbox "\nEnter password:" 10 40 3>&1 1>&2 2>&3) && clear && useradd -s /usr/bin/zsh -m $username -G wheel && echo -e "$password\n$password" | passwd "$username" && echo "User created!" && cd /home/$username && git clone -b qtile https://github.com/piotr-marendowski/dotfiles.git && chmod +x /etc/profile.d/firstboot.sh && chown -R /home/$username/dotfiles && chmod -R 755 /home/$username/dotfiles' &> /dev/tty1
 
     elif [ "$choice" = "dwm" ]; then
         echo "User chose dwm"
-        arch-chroot /mnt /bin/bash -c 'username=$(whiptail --title "Create User" --inputbox "\nEnter username:" 10 40 3>&1 1>&2 2>&3) && password=$(whiptail --title "Create User" --passwordbox "\nEnter password:" 10 40 3>&1 1>&2 2>&3) && clear && useradd -s /bin/zsh -m $username -G wheel && echo -e "$password\n$password" | passwd "$username" && echo "User created!" && cd /home/$username && git clone --single-branch --branch dwm https://github.com/piotr-marendowski/dotfiles.git && chmod +x /etc/profile.d/firstboot.sh && chown -R /home/$username/dotfiles && chmod -R 755 /home/$username/dotfiles' &> /dev/tty1
+        arch-chroot /mnt /bin/bash -c 'username=$(whiptail --title "Create User" --inputbox "\nEnter username:" 10 40 3>&1 1>&2 2>&3) && password=$(whiptail --title "Create User" --passwordbox "\nEnter password:" 10 40 3>&1 1>&2 2>&3) && clear && useradd -s /usr/bin/zsh -m $username -G wheel && echo -e "$password\n$password" | passwd "$username" && echo "User created!" && cd /home/$username && git clone -b dwm https://github.com/piotr-marendowski/dotfiles.git && chmod +x /etc/profile.d/firstboot.sh && chown -R /home/$username/dotfiles && chmod -R 755 /home/$username/dotfiles' &> /dev/tty1
 
     fi
 
