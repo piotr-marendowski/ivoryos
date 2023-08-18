@@ -9,7 +9,7 @@ The whole installation and configuration takes from a few hours to a few minutes
 ![screen4](assets/ivory4.png)
 
 placeholder, dwm will be riced :3
-![screen5](assets/ivory6.png)
+![screen5](assets/ivory5.png)
 
 ## Features
 - Sane defaults (for me at least)
