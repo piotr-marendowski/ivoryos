@@ -1,20 +1,15 @@
 # IvoryOS - Arch based GNU/Linux distribution
 ![ivory logo](assets/ivoryOS.png)
-The whole installation and configuration takes from a few hours to a few minutes (depends on the internet speed). Made it for me to have my own distro with my own defaults. The whole project is WIP.
 
-## Screenshots
 ![screen1](assets/ivory1.png)
 ![screen2](assets/ivory2.png)
 ![screen3](assets/ivory3.png)
 ![screen4](assets/ivory4.png)
-
-placeholder, dwm will be riced :3
 ![screen5](assets/ivory5.png)
 
 ## Features
-- Sane defaults (for me at least)
-- Easy installation, in a GUI-like setup wizard
-- User input required only for necessary interactions
+- Sane defaults
+- User input required only for necessary interactions while installing
 - TUI installation and customization process using [Whiptail](https://en.wikibooks.org/wiki/Bash_Shell_Scripting/Whiptail)
 
 ## System installation
