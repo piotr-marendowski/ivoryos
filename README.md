@@ -30,7 +30,7 @@
 - Stage 2 - Advanced (or not) system configuration (choose programs to install, and configure dotfiles)
 
 
-## ISO Download on [SourceForge](https://sourceforge.net/projects/ivoryos/files/)
+## ISO Download on [SourceForge](https://sourceforge.net/projects/ivoryos/files/) (not really working), working version on tag 0.9-beta
 
 ## Building
 ```
