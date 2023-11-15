@@ -1,5 +1,5 @@
 # IvoryOS - Arch based GNU/Linux distribution
-![ivory logo](assets/ivoryOS.png)
+![IvoryOS banner](assets/IvoryOS.png)
 
 ![screen1](assets/ivory1.png)
 ![screen2](assets/ivory2.png)
@@ -10,7 +10,8 @@
 ## Features
 - ~~Sane~~ My defaults
 - User input required only for necessary interactions while installing
-- TUI installation and customization process using [Whiptail](https://en.wikibooks.org/wiki/Bash_Shell_Scripting/Whiptail)
+- TUI installation and customization process with [Whiptail](https://en.wikibooks.org/wiki/Bash_Shell_Scripting/Whiptail)
+- Fairly versatile installation and configuration
 
 ## System installation
 
@@ -40,7 +41,7 @@ sudo pacman -S archiso
 git clone https://github.com/piotr-marendowski/ivoryos.git
 # enter it
 cd ivoryos
-# compile new iso (building dir/, iso folder/, archiso profile dir/)
-sudo mkarchiso -v -w build/ -o iso/ releng/
+# as root compile new iso (building dir/, iso folder/, archiso profile dir/)
+mkarchiso -v -w build/ -o iso/ releng/
 # to recompile you need to delete the building directory or provide new
 ```
