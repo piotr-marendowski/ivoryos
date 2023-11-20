@@ -2,10 +2,10 @@
 # shellcheck disable=SC2034
 
 iso_name="ivoryos"
-iso_label="ivoryOS_$(date --date="@${SOURCE_DATE_EPOCH:-$(date +%s)}" +%Y%m)"
+iso_label="ivoryOS_1.0-x86_64"
 iso_publisher="Piotr Marendowski <https://github.com/piotr-marendowski>"
 iso_application="IvoryOS Live/Rescue CD"
-iso_version="$(date --date="@${SOURCE_DATE_EPOCH:-$(date +%s)}" +%Y.%m.%d)"
+iso_version="1.0"
 install_dir="user"
 buildmodes=('iso')
 bootmodes=('bios.syslinux.mbr' 'bios.syslinux.eltorito'

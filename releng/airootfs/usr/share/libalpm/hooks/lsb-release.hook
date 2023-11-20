@@ -1,0 +1,11 @@
+# IvoryOS lsb-release hook for neofetch logo
+[Trigger]
+Operation = Install
+Operation = Upgrade
+Type = Package
+Target = lsb-release
+
+[Action]
+Description = Copy /etc/ivory-release to /etc/lsb-release
+When = PostTransaction
+Exec = /bin/sh -c "cp /etc/ivory-release /etc/lsb-release"
