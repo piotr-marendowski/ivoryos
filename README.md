@@ -7,9 +7,9 @@
 - TUI installation and customization process with [Whiptail](https://en.wikibooks.org/wiki/Bash_Shell_Scripting/Whiptail)
 - Fairly versatile installation and configuration
 
-## Antifeatures
-- Obviously less freedom than in cmd, duh
-- Arch Linux maintenance and recovery knowledge if something goes wrong
+## Antifeatures/non-standard features
+- [EFISTUB](https://wiki.archlinux.org/title/EFISTUB) in place of bootloader (on some motherboards can go wrong and fail)
+- [Doas](https://wiki.archlinux.org/title/Doas) in place of [sudo](https://wiki.archlinux.org/title/Sudo)
 
 ## System installation
 
@@ -22,13 +22,13 @@
       Partition 2 = SWAP user-defined (>=2 GB),<br>
       Partition 3 = ROOT rest of the disk space.
 
-    - Manually - `cfdisk` will be run on all disks, then user will be prompted to run one command at time to format and mount created partitions.
+    - Manually - `cfdisk` will be run on all disks, then user will be prompted to run one command at time to format and mount created partitions (didn't test this approach much)
 
-    User will be prompted to enter the name and password of the newly created user, which will have sudo privileges (the don't-ask type). The user will have to choose the [dotfiles branch](https://github.com/piotr-marendowski/dotfiles) which will be run on the first boot.
+    User will be prompted to enter the name and password of the newly created user. [Dotfiles install script](https://github.com/piotr-marendowski/dotfiles) will be run on every boot until it finishes the installation, then it will stop (delete `/etc/profile.d/firstboot.sh` to get rid of this function).
 
 - Stage 2 - Advanced (or not) system configuration (choose programs to install, and configure dotfiles)
 
-## ISO download on [release tag 0.95 on Gitbub](https://github.com/piotr-marendowski/ivoryos/releases/tag/0.95) or [SourceForge](https://sourceforge.net/projects/ivoryos/files/) (unstable, requires tinkering in order to work).
+## ISO download on [release tag 0.95 on Gitbub](https://github.com/piotr-marendowski/ivoryos/releases/tag/0.95) or [SourceForge](https://sourceforge.net/projects/ivoryos/files/) (old, unstable, requires tinkering in order to work).
 
 ## Troubleshooting
 
