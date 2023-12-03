@@ -63,6 +63,7 @@ sellistbox=white,black"
 reboot_now() {
     if whiptail --title "Reboot" --yesno "\nDo you want to reboot now?" 9 35; then
         reboot
+        clear
     fi
 }
 
@@ -115,13 +116,12 @@ start() {
             parted -s "$DISK" mkpart root ext4 "${SWAP_SIZE_MB}M 100%" &> /dev/null
 
             # Check if the DISK variable starts with "nvme"
-            if [[ $DISK == nvme* ]]; then
-                # NVMe disk
+            if case $DISK in nvme*) ;; *) false;; esac; then
                 EFI_PARTITION="${DISK}p1"
                 SWAP_PARTITION="${DISK}p2"
                 ROOT_PARTITION="${DISK}p3"
             else
-                # Not an NVMe disk
+                # other
                 EFI_PARTITION="${DISK}1"
                 SWAP_PARTITION="${DISK}2"
                 ROOT_PARTITION="${DISK}3"
@@ -173,8 +173,10 @@ format your disk(s)." 9 45
 
 else
     if whiptail --yesno "Do you want to shutdown now?" 8 35; then
+        clear
         shutdown now
     else
+        clear
         exit
     fi
 fi
@@ -182,7 +184,7 @@ fi
 }
 
 pacstrap_stage() {
-    pacman -Syu --noconfirm && pacman -S archlinux-keyring --noconfirm && pacman-key --init && pacman-key --populate archlinux
+    pacman -S archlinux-keyring --noconfirm && pacman-key --init && pacman-key --populate archlinux &> /dev/null
     # Install the base system (after reflector is base-devel-like stuff)
     pacstrap /mnt base linux linux-firmware opendoas zsh networkmanager git neovim efibootmgr reflector autoconf automake binutils patch pkgconf gzip sed which gawk make gcc fakeroot archlinux-keyring
 }
@@ -194,7 +196,8 @@ fstab() {
 # Thanks to <https://github.com/shagu> its working!
 chroot() {
     arch-chroot /mnt /bin/bash -c "sed -i 's/#PACMAN_AUTH=()/PACMAN_AUTH=(doas)/g' /etc/makepkg.conf"
-    arch-chroot /mnt /bin/bash -c "echo "KEYMAP=pl_PL" > /etc/vconsole.conf"
+    # arch-chroot /mnt /bin/bash -c "echo "KEYMAP=pl_PL" > /etc/vconsole.conf"
+    arch-chroot /mnt /bin/bash -c "sed -i '/^#en_US.UTF-8/s/^#//' /etc/locale.conf"
     arch-chroot /mnt /bin/bash -c "pacman-key --init && pacman-key --populate archlinux"
     arch-chroot /mnt /bin/bash -c "echo "ivory" > /etc/hostname"
     arch-chroot /mnt /bin/bash -c "systemctl enable NetworkManager"
@@ -231,42 +234,62 @@ EOF
 }
 dotfiles() {
     mv /etc/profile.d/firstboot.sh /mnt/etc/profile.d/ &> /dev/null
+
     arch-chroot /mnt /bin/bash -c 'root_password=$(whiptail --title "Set Root Password" --passwordbox "\nEnter new root password:" 10 40 3>&1 1>&2 2>&3); echo "root:$root_password" | chpasswd'
     clear
 
-    # This "one-liner" took me literally a month
-    # everything all at once because username and password are necessary and their scope is in this command only :)
-    arch-chroot /mnt /bin/bash -c 'username=$(whiptail --title "Create User" --inputbox "\nEnter username:" 10 40 3>&1 1>&2 2>&3) && 
-        password=$(whiptail --title "Create User" --passwordbox "\nEnter password:" 10 40 3>&1 1>&2 2>&3) && clear && 
-        useradd -s /usr/bin/zsh -m $username -G wheel && 
-        echo -e "$password\n$password" | passwd "$username" && echo "User created!" && 
+    # Create a user
+    username=$(whiptail --title "Create User" --inputbox "\nEnter username:" 10 40 3>&1 1>&2 2>&3)
+    password=$(whiptail --title "Create User" --passwordbox "\nEnter password:" 10 40 3>&1 1>&2 2>&3)
 
-        echo "permit nopass ${username} as root" > /etc/doas.conf &&
+    choice=$(whiptail --title "Choose Branch" --menu "\nChoose the branch of dotfiles:" 13 40 4 \
+        "dwm (xorg)"     "" \
+        "dwm (wayland)"  "" \
+        "qtile"          "" \
+        "other"          "" 3>&1 1>&2 2>&3)
+
+    # Inject variables so it can use it
+    arch-chroot /mnt /bin/bash -c '
+        useradd -s /usr/bin/zsh -m '"$username"' -G wheel && 
+        echo -e "'"$password"'\n'"$password"'" | passwd "'"$username"'" && echo "User created!" && 
+
+        echo "permit nopass '"$username"' as root" > /etc/doas.conf &&
         chown -c root:root /etc/doas.conf &&
         chmod -c 0400 /etc/doas.conf &&
+        chmod +x /etc/profile.d/firstboot.sh &&
 
-        mkdir -p /home/$username/Downloads/dotfiles &&
-        chown -R $username:$username /home/$username/Downloads &&
-        chmod -R 755 /home/$username/Downloads &&
-        
-        cd /home/$username/Downloads &&
-        git clone -b dwm https://github.com/piotr-marendowski/dotfiles &&
+        mkdir -p /home/'"$username"'/Downloads' &> /dev/null
 
-        chmod +x /etc/profile.d/firstboot.sh'
+    echo "User configured!"
 
-    # arch-chroot /mnt /bin/bash -c 'username=$(whiptail --title "Create User" --inputbox "\nEnter username:" 10 40 3>&1 1>&2 2>&3) && 
-    # password=$(whiptail --title "Create User" --passwordbox "\nEnter password:" 10 40 3>&1 1>&2 2>&3) && clear && 
-    # useradd -s /usr/bin/zsh -m $username -G wheel && 
-    # echo -e "$password\n$password" | passwd "$username" && echo "User created!" && 
-    # echo "permit nopass ${username} as root" > /etc/doas.conf &&
-    # chown -c root:root /etc/doas.conf &&
-    # chmod -c 0400 /etc/doas.conf &&
-    # mkdir /home/$username/Downloads &&
-    # chown -R $username /home/$username/Downloads &&
-    # cd /home/$username/Downloads &&
-    # git clone -b dwm https://github.com/piotr-marendowski/dotfiles.git && 
-    # chmod +x /etc/profile.d/firstboot.sh && 
-    # chmod -R 755 /home/$username/Downloads/dotfiles'
+    if [ "$choice" = "dwm (xorg)" ]; then
+        arch-chroot /mnt /bin/bash -c '
+            cd /home/'"$username"'/Downloads &&
+            git clone -b dwm https://github.com/piotr-marendowski/dotfiles'
+
+    elif [ "$choice" = "dwm (wayland)" ]; then
+        arch-chroot /mnt /bin/bash -c '
+            cd /home/'"$username"'/Downloads &&
+            git clone -b dwm-wayland https://github.com/piotr-marendowski/dotfiles'
+
+    elif [ "$choice" = "qtile" ]; then
+        arch-chroot /mnt /bin/bash -c '
+            cd /home/'"$username"'/Downloads &&
+            git clone -b qtile https://github.com/piotr-marendowski/dotfiles'
+
+    elif [ "$choice" = "other" ]; then
+        other=$(whiptail --inputbox --title "Dotfiles" "\nEnter the WHOLE git clone link to your dotfiles:" \
+            --cancel-button="Quit" 9 70 3>&1 1>&2 2>&3)
+
+        arch-chroot /mnt /bin/bash -c '
+            cd /home/'"$username"'/Downloads && '"${other}"' '
+
+    fi
+
+    arch-chroot /mnt /bin/bash -c '
+        chown -R "'"$username"':'"$username"'" /home/'"$username"'/Downloads &&
+        chmod -R 755 /home/'"$username"'/Downloads' &> /dev/null
+
 
     whiptail --title "Installation complete!" --msgbox "\nAfter reboot you will have \
 options to customize and configure your system." 10 40
